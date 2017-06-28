@@ -4,6 +4,8 @@ using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 
+//criar verificação para não baixar imagens replicadas
+
 namespace BakaTsukiFormater
 {
     class BakaTsukiExtractor
@@ -41,7 +43,7 @@ namespace BakaTsukiFormater
             Match match = regx.Match(fileText);
 
             string body = "";
-            if (match.Success) body = "<!DOCTYPE html>\n<html>\n<body" + match.Groups["theBody"].Value + "\n</body>\n</html>";
+            if (match.Success) body = "<!-- "+ Form1.about + "\n-->\n<!DOCTYPE html>\n<html>\n<body" + match.Groups["theBody"].Value + "\n</body>\n</html>";
             return body;
         }
 
@@ -79,8 +81,9 @@ namespace BakaTsukiFormater
                     sub = fileArr[i].Substring(fileArr[i].IndexOf("<a href"), fileArr[i].Length - fileArr[i].IndexOf("<a href"));
                     sub = sub.Substring(0, sub.IndexOf(ext) + 3);
                     sub = sub.Replace("<a href=", "").Replace("\"", "");
+                    sub = sub.Replace("www.", "");
 
-                    if (!sub.Contains("www.baka-tsuki.org"))
+                    if (!sub.Contains("baka-tsuki.org"))
                         sub = "https://www.baka-tsuki.org" + sub;
 
                     string name = GetTruePathOfImage(sub.Replace("<a href=", ""), ext);
@@ -97,6 +100,7 @@ namespace BakaTsukiFormater
 
             try
             {
+                Console.WriteLine(url + " " + extension);
                 WebRequest req = WebRequest.Create(url);
                 reader = new StreamReader(req.GetResponse().GetResponseStream());
                 result = reader.ReadToEnd().Split('\n');
@@ -127,6 +131,7 @@ namespace BakaTsukiFormater
 
         private void DownloadImage(string link, string filename)
         {
+            if (File.Exists(filename)) return;
             try
             {
                 using (WebClient client = new WebClient()) client.DownloadFile(link, filename);
