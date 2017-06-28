@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -49,7 +46,6 @@ namespace BakaTsukiFormater
         }
 
         // One day, refactor code with agility pack
-        // does work with toradora
         private string RemoveNonTextualElements(string fileText)
         {
             // Remove the content of script tags
@@ -67,50 +63,57 @@ namespace BakaTsukiFormater
             return fileText;
         }
 
-        // Get image address in href of <a> tag and download it
+        // Get image address in href of <a>  tag and download it
         private string DownloadImagesAndSwitchLinks(string fileText)
         {
-            string sub = "";
+            string sub = "", ext = "";
             string[] fileArr = fileText.Split('\n');
 
             for (int i = 0; i < fileArr.Length; i++)
             {
                 // For rendered pages (like the saved pages)
-                if (fileArr[i].Contains("jpg"))
+                if (fileArr[i].Contains("jpg") || fileArr[i].Contains("png"))
                 {
                     // Get the url of image to be downloaded and replaced by downloaded image
+                    ext = fileArr[i].Contains("jpg") ? "jpg" : "png";
                     sub = fileArr[i].Substring(fileArr[i].IndexOf("<a href"), fileArr[i].Length - fileArr[i].IndexOf("<a href"));
-                    sub = sub.Substring(0, sub.IndexOf("jpg") + 3);
+                    sub = sub.Substring(0, sub.IndexOf(ext) + 3);
                     sub = sub.Replace("<a href=", "").Replace("\"", "");
 
                     if (!sub.Contains("www.baka-tsuki.org"))
                         sub = "https://www.baka-tsuki.org" + sub;
 
-                    string name = GetTruePathOfImage(sub.Replace("<a href=", ""));
+                    string name = GetTruePathOfImage(sub.Replace("<a href=", ""), ext);
                     fileArr[i] = "<img alt=\"" + name + "\" src=\"" + name + "\">";
                 }
             }
             return string.Join("\n", fileArr); ;
         }
 
-        private string GetTruePathOfImage(string url)
+        private string GetTruePathOfImage(string url, string extension)
         {
-            //https://msdn.microsoft.com/pt-br/library/system.net.networkinformation.networkinterface.getisnetworkavailable(v=vs.110).aspx
-            //if (NetworkInterface.GetIsNetworkAvailable() == true)
-            WebRequest req = WebRequest.Create(url);
-            WebResponse res = req.GetResponse();
-            StreamReader reader = new StreamReader(res.GetResponseStream());
-            string[] result = reader.ReadToEnd().Split('\n');
-            reader.Close();
-            res.Close();
+            StreamReader reader = null;
+            string[] result = new string[1] {"Error at search the image"};
 
-            // colocar aqui try cath para impedir que seja abortado caso não tenha net, nesse caso, devolve o url original
+            try
+            {
+                WebRequest req = WebRequest.Create(url);
+                reader = new StreamReader(req.GetResponse().GetResponseStream());
+                result = reader.ReadToEnd().Split('\n');
+                reader.Close();
+
+            }
+            catch (UriFormatException uf)
+            {
+                System.Windows.Forms.MessageBox.Show("url: " + url + "\nError: " + uf.ToString());
+            }
+
             foreach (string line in result)
             {
                 if (line.Contains("fullImageLink")) // div class name
                 {
                     string sub = line.Substring(line.IndexOf("/project"), line.Length - line.IndexOf("/project"));
-                    sub = sub.Substring(0, sub.IndexOf("jpg") + 3);
+                    sub = sub.Substring(0, sub.IndexOf(extension) + 3);
 
                     string name = sub.Substring(sub.LastIndexOf("/") + 1, sub.Length - sub.LastIndexOf("/") - 1);
                     string link = @"https://www.baka-tsuki.org" + sub;
@@ -124,9 +127,13 @@ namespace BakaTsukiFormater
 
         private void DownloadImage(string link, string filename)
         {
-            using (WebClient client = new WebClient())
+            try
             {
-                client.DownloadFile(link, filename);
+                using (WebClient client = new WebClient()) client.DownloadFile(link, filename);
+                
+            } catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("link: " + link + "\nfilename: " + filename + "\nError: " + e.ToString());
             }
         }
     }

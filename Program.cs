@@ -14,13 +14,12 @@ namespace BakaTsukiFormater
         [STAThread]
         static void Main(string[] args)
         {
-            
             //Console.WriteLine("BakaTsuki Page Formater by Hermes Passer (gladiocitrico.blogspot.com)");
 
             //switch (args.Length)
             //{
             //    case 0:
-                    Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new Form1());
                 //    break;

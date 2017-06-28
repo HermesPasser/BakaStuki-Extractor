@@ -34,8 +34,8 @@
             this.btnBrowser = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.textBrowse = new System.Windows.Forms.TextBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.textURL = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,9 +54,9 @@
             // 
             // btnConvert
             // 
-            this.btnConvert.Location = new System.Drawing.Point(69, 101);
+            this.btnConvert.Location = new System.Drawing.Point(16, 101);
             this.btnConvert.Name = "btnConvert";
-            this.btnConvert.Size = new System.Drawing.Size(75, 23);
+            this.btnConvert.Size = new System.Drawing.Size(196, 23);
             this.btnConvert.TabIndex = 0;
             this.btnConvert.Text = "Convert";
             this.btnConvert.UseVisualStyleBackColor = true;
@@ -94,6 +94,14 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "From File";
             // 
+            // textBrowse
+            // 
+            this.textBrowse.Enabled = false;
+            this.textBrowse.Location = new System.Drawing.Point(6, 6);
+            this.textBrowse.Name = "textBrowse";
+            this.textBrowse.Size = new System.Drawing.Size(117, 20);
+            this.textBrowse.TabIndex = 5;
+            // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.ButtonFace;
@@ -104,14 +112,6 @@
             this.tabPage2.Size = new System.Drawing.Size(192, 36);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "From URL";
-            // 
-            // textBrowse
-            // 
-            this.textBrowse.Enabled = false;
-            this.textBrowse.Location = new System.Drawing.Point(6, 6);
-            this.textBrowse.Name = "textBrowse";
-            this.textBrowse.Size = new System.Drawing.Size(117, 20);
-            this.textBrowse.TabIndex = 5;
             // 
             // textURL
             // 
@@ -142,7 +142,7 @@
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
@@ -157,7 +157,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -171,7 +171,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "BakaStuki Extrator";
+            this.Text = "BakaTsuki Extractor";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
