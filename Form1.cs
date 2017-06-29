@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BakaTsukiFormater
@@ -14,12 +7,13 @@ namespace BakaTsukiFormater
     public partial class Form1 : Form
     {
         private string fileText = null;
-        public static string about = "BakaStuki Extractor 0.1\nGitHub: HermesPasser/BakaStuki-Extractor\nBy Hermes Passer (gladiocitrico.blogspot.com)";
+        public static string about = "BakaStuki Extractor 0.2\nGitHub: HermesPasser/BakaStuki-Extractor\nBy Hermes Passer (gladiocitrico.blogspot.com)";
 
         public Form1()
         {
             InitializeComponent();
-            saveFileDialog1.Filter = " HTML file (*.html | *.html";
+            openFileDialog1.Filter = " HTML file (*.html) | *.html";
+            saveFileDialog1.Filter = " HTML file (*.html) | *.html";
             btnBrowser.Focus();
         }
 

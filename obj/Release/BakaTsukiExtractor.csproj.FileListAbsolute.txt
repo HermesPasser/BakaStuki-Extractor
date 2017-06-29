@@ -1,0 +1,9 @@
+C:\Users\Diogo\Dropbox\zProjects\Dev\Public\BakaTsuki Extractor\project\bin\Release\BakaTsuki Extractor.exe.config
+C:\Users\Diogo\Dropbox\zProjects\Dev\Public\BakaTsuki Extractor\project\bin\Release\BakaTsuki Extractor.exe
+C:\Users\Diogo\Dropbox\zProjects\Dev\Public\BakaTsuki Extractor\project\bin\Release\BakaTsuki Extractor.pdb
+C:\Users\Diogo\Dropbox\zProjects\Dev\Public\BakaTsuki Extractor\project\obj\Release\BakaTsukiExtractor.csprojResolveAssemblyReference.cache
+C:\Users\Diogo\Dropbox\zProjects\Dev\Public\BakaTsuki Extractor\project\obj\Release\BakaTsukiFormater.Form1.resources
+C:\Users\Diogo\Dropbox\zProjects\Dev\Public\BakaTsuki Extractor\project\obj\Release\BakaTsukiExtractor.Properties.Resources.resources
+C:\Users\Diogo\Dropbox\zProjects\Dev\Public\BakaTsuki Extractor\project\obj\Release\BakaTsukiExtractor.csproj.GenerateResource.Cache
+C:\Users\Diogo\Dropbox\zProjects\Dev\Public\BakaTsuki Extractor\project\obj\Release\BakaTsuki Extractor.exe
+C:\Users\Diogo\Dropbox\zProjects\Dev\Public\BakaTsuki Extractor\project\obj\Release\BakaTsuki Extractor.pdb

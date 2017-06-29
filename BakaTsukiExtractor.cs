@@ -4,8 +4,6 @@ using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 
-//criar verificação para não baixar imagens replicadas
-
 namespace BakaTsukiFormater
 {
     class BakaTsukiExtractor
@@ -74,7 +72,7 @@ namespace BakaTsukiFormater
             for (int i = 0; i < fileArr.Length; i++)
             {
                 // For rendered pages (like the saved pages)
-                if (fileArr[i].Contains("jpg") || fileArr[i].Contains("png"))
+                if (fileArr[i].Contains("class=\"image\"") && (fileArr[i].Contains("jpg") || fileArr[i].Contains("png")))
                 {
                     // Get the url of image to be downloaded and replaced by downloaded image
                     ext = fileArr[i].Contains("jpg") ? "jpg" : "png";
