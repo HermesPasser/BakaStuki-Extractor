@@ -7,17 +7,17 @@ namespace BakaTsukiFormater
     public partial class Form1 : Form
     {
         private string fileText = null;
-        public static string about = "BakaStuki Extractor 0.2\nGitHub: HermesPasser/BakaStuki-Extractor\nBy Hermes Passer (gladiocitrico.blogspot.com)";
+        public static string about = "BakaStuki Extractor 0.3\nGitHub: HermesPasser/BakaStuki-Extractor\nBy Hermes Passer (gladiocitrico.blogspot.com)";
 
         public Form1()
         {
             InitializeComponent();
-            openFileDialog1.Filter = " HTML file (*.html) | *.html";
-            saveFileDialog1.Filter = " HTML file (*.html) | *.html";
+            openFileDialog1.Filter = " HTML file (*.html, *.htm) | *.html; *.htm";
+            saveFileDialog1.Filter = " HTML file (*.html, *.htm) | *.html; *.htm";
             btnBrowser.Focus();
         }
 
-        private void Broser()
+        private void Browse()
         {
             openFileDialog1.FileName = "";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -39,7 +39,7 @@ namespace BakaTsukiFormater
         }
         private void btnBrowser_Click(object sender, EventArgs e)
         {
-            Broser();
+            Browse();
         }
 
         private void btnConvert_Click(object sender, EventArgs e)
@@ -47,7 +47,7 @@ namespace BakaTsukiFormater
             if (tabControl1.SelectedIndex == 0)
             {
                 if (fileText != null) Save();
-                else Broser();
+                else Browse();
             }
             else
             {
