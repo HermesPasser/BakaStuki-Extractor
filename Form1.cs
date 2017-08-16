@@ -7,7 +7,7 @@ namespace BakaTsukiFormater
     public partial class Form1 : Form
     {
         private string fileText = null;
-        public static string about = "BakaStuki Extractor 0.3\nGitHub: HermesPasser/BakaStuki-Extractor\nBy Hermes Passer (gladiocitrico.blogspot.com)";
+        public static string about = "BakaStuki Extractor 0.3.2\nGitHub: HermesPasser/BakaStuki-Extractor\nBy Hermes Passer (gladiocitrico.blogspot.com)";
 
         public Form1()
         {
@@ -37,6 +37,7 @@ namespace BakaTsukiFormater
             res.Close();
             return result;
         }
+		
         private void btnBrowser_Click(object sender, EventArgs e)
         {
             Browse();

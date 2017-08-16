@@ -102,12 +102,14 @@ namespace BakaTsukiFormater
                 WebRequest req = WebRequest.Create(url);
                 reader = new StreamReader(req.GetResponse().GetResponseStream());
                 result = reader.ReadToEnd().Split('\n');
-                reader.Close();
-
             }
             catch (UriFormatException uf)
             {
                 System.Windows.Forms.MessageBox.Show("url: " + url + "\nError: " + uf.ToString());
+            }
+            finally
+            {
+                if (reader != null) reader.Close();
             }
 
             foreach (string line in result)
