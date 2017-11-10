@@ -1,6 +1,6 @@
-﻿namespace BakaTsukiFormater
+﻿namespace BakaTsukiExtractor
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Variável de designer necessária.
@@ -42,10 +42,12 @@
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -54,9 +56,11 @@
             // 
             // btnConvert
             // 
-            this.btnConvert.Location = new System.Drawing.Point(16, 101);
+            this.btnConvert.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnConvert.Location = new System.Drawing.Point(11, 106);
             this.btnConvert.Name = "btnConvert";
-            this.btnConvert.Size = new System.Drawing.Size(196, 23);
+            this.btnConvert.Size = new System.Drawing.Size(237, 23);
             this.btnConvert.TabIndex = 0;
             this.btnConvert.Text = "Convert";
             this.btnConvert.UseVisualStyleBackColor = true;
@@ -64,9 +68,10 @@
             // 
             // btnBrowser
             // 
-            this.btnBrowser.Location = new System.Drawing.Point(126, 3);
+            this.btnBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBrowser.Location = new System.Drawing.Point(163, 5);
             this.btnBrowser.Name = "btnBrowser";
-            this.btnBrowser.Size = new System.Drawing.Size(60, 23);
+            this.btnBrowser.Size = new System.Drawing.Size(64, 23);
             this.btnBrowser.TabIndex = 3;
             this.btnBrowser.Text = "Browse";
             this.btnBrowser.UseVisualStyleBackColor = true;
@@ -74,32 +79,34 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(12, 33);
+            this.tabControl1.Location = new System.Drawing.Point(11, 27);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(200, 62);
+            this.tabControl1.Size = new System.Drawing.Size(241, 60);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.tabPage1.Controls.Add(this.btnBrowser);
-            this.tabPage1.Controls.Add(this.textBrowse);
+            this.tabPage1.Controls.Add(this.tableLayoutPanel1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(192, 36);
+            this.tabPage1.Size = new System.Drawing.Size(233, 34);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "From File";
             // 
             // textBrowse
             // 
+            this.textBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBrowse.Enabled = false;
-            this.textBrowse.Location = new System.Drawing.Point(6, 6);
+            this.textBrowse.Location = new System.Drawing.Point(3, 7);
             this.textBrowse.Name = "textBrowse";
-            this.textBrowse.Size = new System.Drawing.Size(117, 20);
+            this.textBrowse.Size = new System.Drawing.Size(154, 20);
             this.textBrowse.TabIndex = 5;
             // 
             // tabPage2
@@ -109,15 +116,16 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(192, 36);
+            this.tabPage2.Size = new System.Drawing.Size(233, 34);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "From URL";
             // 
             // textURL
             // 
+            this.textURL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textURL.Location = new System.Drawing.Point(6, 6);
             this.textURL.Name = "textURL";
-            this.textURL.Size = new System.Drawing.Size(180, 20);
+            this.textURL.Size = new System.Drawing.Size(221, 20);
             this.textURL.TabIndex = 6;
             // 
             // menuStrip1
@@ -127,7 +135,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(223, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(264, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -161,24 +169,43 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 69.84127F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.15873F));
+            this.tableLayoutPanel1.Controls.Add(this.btnBrowser, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.textBrowse, 0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(230, 34);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(223, 132);
+            this.ClientSize = new System.Drawing.Size(264, 141);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnConvert);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
+            this.MinimumSize = new System.Drawing.Size(280, 150);
             this.Name = "Form1";
             this.Text = "BakaTsuki Extractor";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -200,6 +227,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }
 

@@ -2,21 +2,22 @@
 using System.Threading;
 using System.Windows.Forms;
 
-namespace BakaTsukiFormater
+namespace BakaTsukiExtractor
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private string fileText = null;
-        public static string about = "BakaStuki Extractor 0.3.2\nGitHub: HermesPasser/BakaStuki-Extractor\nBy Hermes Passer (gladiocitrico.blogspot.com)";
+        public static MainForm instance;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             openFileDialog1.Filter = " HTML file (*.html, *.htm) | *.html; *.htm";
             saveFileDialog1.Filter = " HTML file (*.html, *.htm) | *.html; *.htm";
-            btnBrowser.Focus();
+            tabControl1.SelectedIndex = 1;
+            instance = this;
         }
-
+        
         private void Browse()
         {
             openFileDialog1.FileName = "";
@@ -25,17 +26,6 @@ namespace BakaTsukiFormater
                 textBrowse.Text = openFileDialog1.FileName;
                 fileText = System.IO.File.ReadAllText(openFileDialog1.FileName);
             }
-        }
-
-        private string GetURL()
-        {
-            System.Net.WebRequest req = System.Net.WebRequest.Create(textURL.Text);
-            System.Net.WebResponse res = req.GetResponse();
-            System.IO.StreamReader reader = new System.IO.StreamReader(res.GetResponseStream());
-            string result = reader.ReadToEnd();
-            reader.Close();
-            res.Close();
-            return result;
         }
 		
         private void btnBrowser_Click(object sender, EventArgs e)
@@ -52,12 +42,18 @@ namespace BakaTsukiFormater
             }
             else
             {
-                if (textURL.Text != null)
+                if (textURL.Text.Contains(@"baka-tsuki.org/project/index.php?title="))
                 {
-                    fileText = GetURL();
-                    Save();
+                    try
+                    {
+                        fileText = BakaTsukiExtractor.GetHtml(textURL.Text);
+                        Save();
+                    } catch (BakaTsukiExtractorException ee)
+                    {
+                        MessageBox.Show(ee.Message);
+                    }
                 }
-                else MessageBox.Show("URL cannot be empty.");
+                else MessageBox.Show("URL is not from baka-tsuki.org.");
             }            
         }
 
@@ -66,14 +62,17 @@ namespace BakaTsukiFormater
             if (saveFileDialog1.ShowDialog() != DialogResult.OK)
                 return;
 
+            this.Enabled = false;
             var thread = new Thread(() =>
             {
                 string temp = saveFileDialog1.FileName;
                 BakaTsukiExtractor bt = new BakaTsukiExtractor(fileText);
-                bt.InitAndSave(temp);
+                bt.Save(temp);
 
                 if (temp.Contains("\\"))
                     temp = temp.Remove(0, temp.LastIndexOf("\\") + 1);
+
+                UIThread(delegate { this.Enabled = true; });
                 MessageBox.Show(temp + " completed.");
             });
             thread.Start();
@@ -86,7 +85,14 @@ namespace BakaTsukiFormater
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(about, "About");
+            new About().Show();
+            this.Enabled = false;
+        }
+
+        private void UIThread(MethodInvoker code)
+        {
+            if (this.InvokeRequired) this.Invoke(code);
+            else code.Invoke();
         }
     }
 }
