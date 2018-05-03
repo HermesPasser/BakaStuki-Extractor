@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
+using BakaTsukiExtractor.crawler;
+using BakaTsukiExtractor.extractor;
 
 namespace BakaTsukiExtractor
 {
     public partial class MainForm : Form
     {
         private string fileText = null;
+
+        private Extractor ex;
+        private Crawler cr = new Crawler();
+
         public static MainForm instance;
 
         public MainForm()
@@ -46,9 +52,9 @@ namespace BakaTsukiExtractor
                 {
                     try
                     {
-                        fileText = BakaTsukiExtractor.GetHtml(textURL.Text);
+                        fileText = cr.GetHtml(textURL.Text);
                         Save();
-                    } catch (BakaTsukiExtractorException ee)
+                    } catch (ExtractorException ee)
                     {
                         MessageBox.Show(ee.Message);
                     }
@@ -66,14 +72,19 @@ namespace BakaTsukiExtractor
             var thread = new Thread(() =>
             {
                 string temp = saveFileDialog1.FileName;
-                BakaTsukiExtractor bt = new BakaTsukiExtractor(fileText);
-                bt.Save(temp);
+                ex = new Extractor(fileText, cr);
 
-                if (temp.Contains("\\"))
-                    temp = temp.Remove(0, temp.LastIndexOf("\\") + 1);
+                try
+                {
+                    ex.Save(temp);
+                }
+                catch (ExtractorException e)
+                {
+                    MessageBox.Show(e.Message);
+                }
 
                 UIThread(delegate { this.Enabled = true; });
-                MessageBox.Show(temp + " completed.");
+                MessageBox.Show(System.IO.Path.GetFileName(temp) + " completed.");
             });
             thread.Start();
         }
