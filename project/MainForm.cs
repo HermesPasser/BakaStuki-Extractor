@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using BakaTsukiExtractor.util;
 using BakaTsukiExtractor.crawler;
 using BakaTsukiExtractor.extractor;
 
@@ -18,10 +20,17 @@ namespace BakaTsukiExtractor
         public MainForm()
         {
             InitializeComponent();
-            openFileDialog1.Filter = " HTML file (*.html, *.htm) | *.html; *.htm";
-            saveFileDialog1.Filter = " HTML file (*.html, *.htm) | *.html; *.htm";
+
+            openFileDialog1.Filter = StringUtility.HtmlFilter;
+            saveFileDialog1.Filter = StringUtility.HtmlFilter;
             tabControl1.SelectedIndex = 1;
             instance = this;
+
+            if (!File.Exists(StringUtility.TemplatePath))
+            {
+                MessageBox.Show(StringUtility.TemplatePath + " does not exists, try download the program again.");
+                Application.Exit();
+            }
         }
         
         private void Browse()
@@ -30,7 +39,7 @@ namespace BakaTsukiExtractor
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 textBrowse.Text = openFileDialog1.FileName;
-                fileText = System.IO.File.ReadAllText(openFileDialog1.FileName);
+                fileText = File.ReadAllText(openFileDialog1.FileName);
             }
         }
 		
@@ -62,7 +71,7 @@ namespace BakaTsukiExtractor
                 else MessageBox.Show("URL is not from baka-tsuki.org.");
             }            
         }
-
+        
         private void Save()
         {
             if (saveFileDialog1.ShowDialog() != DialogResult.OK)
@@ -82,9 +91,15 @@ namespace BakaTsukiExtractor
                 {
                     MessageBox.Show(e.Message);
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred, see error_log.txt for more details");
+                    StringUtility.SaveText(ex.Message + " \n " + ex.StackTrace, "error_log.txt");
+                }
+
 
                 UIThread(delegate { this.Enabled = true; });
-                MessageBox.Show(System.IO.Path.GetFileName(temp) + " completed.");
+                MessageBox.Show(Path.GetFileName(temp) + " completed.");
             });
             thread.Start();
         }

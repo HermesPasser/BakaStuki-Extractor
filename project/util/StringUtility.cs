@@ -4,6 +4,9 @@ namespace BakaTsukiExtractor.util
 {
     public static class StringUtility
     {
+        public static readonly string HtmlFilter = " HTML file (*.html, *.htm) | *.html; *.htm";
+        public static readonly string TemplatePath = @"res\template.html";
+
         public static string RemoveInvalidPathChars(this string text)
         {
             char[] InvalidFileNameChars = Path.GetInvalidFileNameChars(),
@@ -15,6 +18,14 @@ namespace BakaTsukiExtractor.util
                 text.Replace(ch.ToString(), "");
 
             return text;
+        }
+
+        public static void SaveText(string text, string filename)
+        {
+            using (StreamWriter sw = File.CreateText(filename))
+            {
+                sw.Write(text);
+            }
         }
     }
 }

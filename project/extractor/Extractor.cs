@@ -3,6 +3,8 @@ using System.Xml;
 using System.Text;
 using BakaTsukiExtractor.crawler;
 using BakaTsukiExtractor.util;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace BakaTsukiExtractor.extractor
 {
@@ -12,8 +14,8 @@ namespace BakaTsukiExtractor.extractor
         private bool extracted;
 
         private XmlDocument template;
-        private XmlDocument htmlPage;
-        private XmlNode htmlPageContent;
+        private XmlDocument page;
+        private XmlNode pageContent;
 
         private ICrawable crawler;
 
@@ -21,15 +23,13 @@ namespace BakaTsukiExtractor.extractor
         {
             this.crawler = crawler;
 
-            // Load the template document
             template = new XmlDocument();
-            template.Load(@"res\template.html");
+            page = new XmlDocument();
 
             try
             {
-                // Load the html (from file or url)
-                htmlPage = new XmlDocument();
-                htmlPage.LoadXml(htmlText);
+                template.Load(StringUtility.TemplatePath);
+                page.LoadXml(htmlText);
             }
             catch (XmlException)
             {
@@ -37,10 +37,10 @@ namespace BakaTsukiExtractor.extractor
             }
 
             // Get elements to add in template
-            XmlNode body     = htmlPage.SelectSingleNode("//body");
+            XmlNode body     = page.SelectSingleNode("//body");
             XmlNode titleH1  = body.SelectSingleNode("//h1[@id='firstHeading']");
-            XmlNode titleTag = htmlPage.SelectSingleNode("//head").SelectSingleNode("//title");
-            htmlPageContent  = body.SelectSingleNode("//div[@id='mw-content-text']");
+            XmlNode titleTag = page.SelectSingleNode("//head").SelectSingleNode("//title");
+            pageContent  = body.SelectSingleNode("//div[@id='mw-content-text']");
        
             // Add elements to template
             template.SelectSingleNode("//head").AppendChild(template.ImportNode(titleTag, true));
@@ -53,15 +53,15 @@ namespace BakaTsukiExtractor.extractor
                 return;
 
             extracted = true;
-            SetUpImages();
             RemoveStyle();
             RemoveEditAnchors();
             RemoveTables();
             RemoveComments();
-            
+            SetUpImages();
+
             // if true is set the anchors with no content will be closed in itself (<a />) and chrome not process this kind
             //of anchor, but if is false then nothing will be imported.
-            template.SelectSingleNode("//body").AppendChild(template.ImportNode(htmlPageContent, true));
+            template.SelectSingleNode("//body").AppendChild(template.ImportNode(pageContent, true));
         }
 
         public void Save(string filepath)
@@ -82,35 +82,24 @@ namespace BakaTsukiExtractor.extractor
 
         private void RemoveComments()
         {
-            XmlNodeList comments = htmlPageContent.SelectNodes("//comment()");
-
-            foreach (XmlNode child in comments)
-                child.ParentNode.RemoveChild(child);
+            pageContent.RemoveNodesByXpath("//comment()");
         }
 
         private void RemoveEditAnchors()
         {
-            XmlNodeList spansWithBrackets = htmlPageContent.SelectNodes("//span[contains(@class, 'mw-editsection-bracket')]");
-            XmlNodeList anchorsWithEditInTitle = htmlPageContent.SelectNodes("//a[contains(@title, 'Edit section:')]");
-
-            foreach (XmlNode node in spansWithBrackets)
-                node.ParentNode.RemoveChild(node);
-
-            foreach (XmlNode node in anchorsWithEditInTitle)
-                    node.ParentNode.RemoveChild(node);
+            pageContent.RemoveNodesByXpath("//span[contains(@class, 'mw-editsection')]"); // not working for some reason the spans with that class still remain
+            pageContent.RemoveNodesByXpath("//span[contains(@class, 'mw-editsection-bracket')]");
+            pageContent.RemoveNodesByXpath("//a[contains(@title, 'Edit section:')]");
         }
 
         private void RemoveTables()
         {
-            XmlNodeList tables = htmlPageContent.SelectNodes("//table");
-
-            foreach (XmlNode child in tables)
-                child.ParentNode.RemoveChild(child);
+            pageContent.RemoveNodesByXpath("//table");
         }
 
         private void RemoveStyle()
         {
-            XmlNodeList nodesWithStyle = htmlPage.SelectNodes("//*[@style]");
+            XmlNodeList nodesWithStyle = page.SelectNodes("//*[@style]");
 
             foreach (XmlNode node in nodesWithStyle)
                 node.Attributes.Remove(node.Attributes["style"]);
@@ -119,13 +108,16 @@ namespace BakaTsukiExtractor.extractor
         // Get image url, add image tag and download image, read about-images.rtf to undertand how iworkst 
         private void SetUpImages()
         {
-            // Get all the <div> nodes with the <a> childs that have the image url
-            XmlNodeList lis = htmlPageContent.SelectNodes("//div[@class='thumb tright']");
+            // Get all the <div> nodes with the <a> childs that have the image url.
+            XmlNodeList thumbDivs = pageContent.SelectNodes("//div[@class='thumb']");
+            XmlNodeList thumbDivs2 = pageContent.SelectNodes("//div[@class='thumb tright']");
+            IEnumerable<XmlNode> thumbs = thumbDivs.Concat(thumbDivs2);
+
             string pageLink = "", imageName = "";
 
-            for (int i = 0; i < lis.Count; i++)
+            foreach (XmlNode thumbDiv in thumbs)
             {
-                XmlNode anchorTag = lis[i].SelectSingleNode("//a[@class='image']");
+                XmlNode anchorTag = thumbDiv.SelectSingleNode(".//a[@class='image']");
 
                 pageLink = anchorTag.Attributes["href"].Value;
                 pageLink = AddBakatsukiUrlIfNotContain(pageLink);
@@ -135,16 +127,12 @@ namespace BakaTsukiExtractor.extractor
                 // so i cannot use this line: lis[i].SelectSingleNode("img").Attributes["alt"].Value;
                 imageName = Path.GetFileName(pageLink);
 
-                // Remove all childs of the current div node.
-                foreach (XmlNode child in lis[i].ChildNodes)
-                    child.ParentNode.RemoveChild(child);
-
                 // Create a image node (img) with the source attribute (src="imageName)" with the same name 
                 // as the image will be saved and append in the current div node (list[i]).
-                XmlElement element = htmlPage.CreateElement("", "img", "");
+                XmlElement element = page.CreateElement("", "img", "");
                 element.SetAttribute("src", imageName);
                 element.SetAttribute("alt", imageName);
-                lis[i].AppendChild(element);
+                thumbDiv.ParentNode.InsertBefore(element, thumbDiv);
 
                 try
                 {
@@ -155,6 +143,9 @@ namespace BakaTsukiExtractor.extractor
                     throw;
                 }
             }
+
+            pageContent.RemoveNodesByXpath("//div[@class='thumb']");
+            pageContent.RemoveNodesByXpath("//div[@class='thumb tright']");
         }
 
         // Get the original version of the image in the file page

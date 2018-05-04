@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace BakaTsukiExtractor
 {
     public partial class About : Form
     {
-        string version = "1.4";
+        string version = "1.5";
 
         public About()
         {

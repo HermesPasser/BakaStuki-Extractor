@@ -1,6 +1,4 @@
-*/vs/*
-*/bin/*
-*/obj/*
-*/TestResults/*
-
 notas.txt
+/project/bin/
+/project/obj/
+/.vs/

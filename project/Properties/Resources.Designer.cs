@@ -22,7 +22,7 @@ namespace BakaTsukiExtractor.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace BakaTsukiExtractor.Properties {
         ///   Retorna a instância de ResourceManager armazenada em cache usada por essa classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BakaTsukiExtractor.Properties.Resources", typeof(Resources).Assembly);
@@ -51,12 +51,47 @@ namespace BakaTsukiExtractor.Properties {
         ///   pesquisas de recursos que usam essa classe de recurso de tipo de alta segurança.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a &lt;!DOCTYPE html&gt;
+        ///&lt;html lang=&quot;en&quot;&gt;
+        ///  &lt;head&gt;
+        ///    &lt;style&gt;
+        ///      body{
+        ///        text-align: justify;
+        ///	    }
+        ///      
+        ///      ul {
+        ///        list-style-type: none;
+        ///        margin: 0;
+        ///        padding: 0;
+        ///      }
+        ///
+        ///      img {
+        ///        max-width: 100%;
+        ///        display: block;
+        ///        margin: 0 auto;
+        ///      }
+        ///    &lt;/style&gt;
+        ///  &lt;/head&gt;
+        ///  
+        ///  &lt;body&gt;
+        ///    
+        ///  &lt;/body&gt;
+        ///&lt;/html&gt;
+        ///.
+        /// </summary>
+        public static string template {
+            get {
+                return ResourceManager.GetString("template", resourceCulture);
             }
         }
     }
